@@ -1,14 +1,12 @@
-
-create TABLE person(
+create TABLE users(
     id SERIAL PRIMARY KEY,
+    login VARCHAR(255),
     name VARCHAR(255),
-    surname VARCHAR(255)
+    surname VARCHAR(255),
+    patronymic VARCHAR(255),
+	password VARCHAR(10),
+    role SERIAL
 );
 
-create TABLE post(
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255),
-    content VARCHAR(255),
-    user_id INTEGER,
-    FOREIGN KEY (user_id) REFERENCES person(id)
-);
+INSERT INTO users (login, name, surname, patronymic, password, role)
+VALUES ('test', 'Тест', 'Тестов', 'Тестович', '123123', 1);
