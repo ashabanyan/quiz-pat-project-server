@@ -1,15 +1,28 @@
+require('dotenv').config()
 const express = require('express')
-const usersRouter = require('./routes/users.router')
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const authRouter = require('./router/index')
+const errorMiddleware = require('./middleware/error-middleware')
 
-const PORT = process.env.PORT || 3030
-
+const PORT = process.env.PORT || 6000;
 const app = express()
 
-const cors = require('cors');
-
-app.use(cors());
 app.use(express.json())
-app.use('/api', usersRouter)
+app.use(cookieParser())
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}))
+app.use('/api', authRouter)
+app.use(errorMiddleware)
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+const start = async() => {
+    try {
+        app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`))
+    } catch (e) {
+        console.log(e)
+    }
+}
 
+start()
