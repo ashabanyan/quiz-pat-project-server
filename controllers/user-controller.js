@@ -53,14 +53,6 @@ class UserController {
     }
   }
 
-  // async activate(req, res, next) {
-  //     try {
-
-  //     } catch (e) {
-  //         next(e)
-  //     }
-  // }
-
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;

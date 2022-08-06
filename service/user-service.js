@@ -4,9 +4,11 @@ const uuid = require("uuid");
 const tokenService = require("./token-service");
 const UserDTO = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
+const userRoles = require("../constants/user");
 
 class UserService {
   async registration(email, password, name, surname, patronymic, role_id) {
+    const patronymicReq = patronymic.length > 0 ? patronymic[0] : null;
     const users = await db.query("SELECT * FROM users");
     const candidate = users.rows.find((item) => item.email === email);
     if (candidate) {
@@ -14,11 +16,12 @@ class UserService {
         `Пользователь с почтовым адресом ${email} уже существует!`
       );
     }
+    const roleId = userRoles[role_id];
     const hashPassword = await bcrypt.hash(password, 3);
-    const activationLink = uuid.v4();
+
     const newUserReq = await db.query(
       "INSERT INTO users (email, password, name, surname, patronymic, role_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [email, hashPassword, name, surname, patronymic, role_id]
+      [email, hashPassword, name, surname, patronymic, roleId]
     );
     const newUser = newUserReq.rows[0];
 
