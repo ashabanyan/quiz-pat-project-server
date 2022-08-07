@@ -64,6 +64,15 @@ INSERT INTO level (name, translation) VALUES ('medium', 'Средний')
 INSERT INTO level (name, translation) VALUES ('hard', 'Сложный') 
 
 --------------------------------------------------------------------------------------------------------------
+-- Создание таблицы  файлов
+CREATE TABLE files (
+	id SERIAL PRIMARY KEY NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	extension VARCHAR(10) NOT NULL,
+	filename VARCHAR(255) NOT NULL
+)
+
+--------------------------------------------------------------------------------------------------------------
 -- Создание таблицы основной сущности квиз
 create TABLE quiz(
     id SERIAL PRIMARY KEY NOT NULL,
@@ -71,11 +80,13 @@ create TABLE quiz(
     category_id INTEGER NOT NULL,
     level_id INTEGER NOT NULL,
     creator_id INTEGER NOT NULL,
+    cover_id INTEGER NOT NULL,
     access_roles_id INTEGER[],
     sys_status VARCHAR DEFAULT 'A',
     FOREIGN KEY (category_id) REFERENCES category(id),
     FOREIGN KEY (level_id) REFERENCES level(id),
     FOREIGN KEY (creator_id) REFERENCES users(id)
+    FOREIGN KEY (cover_id) REFERENCES files(id)
 );
 
 INSERT INTO quiz (name, category_id, level_id, creator_id, access_roles_id) 
