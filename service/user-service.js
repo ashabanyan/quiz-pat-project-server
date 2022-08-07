@@ -1,6 +1,5 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
-const uuid = require("uuid");
 const tokenService = require("./token-service");
 const UserDTO = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
