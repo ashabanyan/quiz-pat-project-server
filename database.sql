@@ -67,9 +67,11 @@ INSERT INTO level (name, translation) VALUES ('hard', 'Сложный')
 -- Создание таблицы  файлов
 CREATE TABLE files (
 	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(255) NOT NULL,
+	originalname VARCHAR(255) NOT NULL,
+	filename VARCHAR(255) NOT NULL,
+	destination VARCHAR(255) NOT NULL,
 	extension VARCHAR(10) NOT NULL,
-	filename VARCHAR(255) NOT NULL
+	size INTEGER NOT NULL
 )
 
 --------------------------------------------------------------------------------------------------------------
@@ -85,9 +87,9 @@ create TABLE quiz(
     sys_status VARCHAR DEFAULT 'A',
     FOREIGN KEY (category_id) REFERENCES category(id),
     FOREIGN KEY (level_id) REFERENCES level(id),
-    FOREIGN KEY (creator_id) REFERENCES users(id)
+    FOREIGN KEY (creator_id) REFERENCES users(id),
     FOREIGN KEY (cover_id) REFERENCES files(id)
 );
 
-INSERT INTO quiz (name, category_id, level_id, creator_id, access_roles_id) 
-VALUES ('История СССР', 1, 1, 3, ARRAY [1,2,3])
+INSERT INTO quiz (name, category_id, level_id, creator_id, cover_id, access_roles_id) 
+VALUES ('История СССР', 1, 1, 3, 1, ARRAY [1,2,3])

@@ -1,22 +1,29 @@
-const multer = require("multer");
 const uuid = require("uuid");
+const db = require("../db");
 
-const fileuuid = uuid.v4();
+class FileService {
+  getFileExtension(name) {
+    return name.split(".").reverse()[0];
+  }
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // '/files' это директория в которую будут сохранятся файлы
-    cb(null, "files/");
-  },
-  filename: (req, file, cb) => {
-    // Возьмем оригинальное название файла, и под этим же названием сохраним его на сервере
-    const { originalname } = file;
-    const extension = originalname.split(".").reverse()[0];
-    const fileName = `${fileuuid}.${extension}`;
-    cb(null, fileName);
-  },
-});
+  getUuidFileName(originalname) {
+    const extension = this.getFileExtension(originalname);
+    const newUuid = uuid.v4();
+    return `${newUuid}.${extension}`;
+  }
 
-const upload = multer({ storage: storage });
+  async saveFileInfo(file) {
+    const { originalname, destination, filename, size } = file;
+    const extension = this.getFileExtension(originalname);
+    const fileRequest = await db.query(
+      "INSERT INTO files (originalname, filename, destination, extension, size) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [originalname, filename, destination, extension, size]
+    );
+    // console.log(fileRequest);
+    const newFile = fileRequest.rows[0];
 
-module.exports = upload;
+    return newFile;
+  }
+}
+
+module.exports = new FileService();

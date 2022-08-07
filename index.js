@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRouter = require("./router/user.router");
 const nsiRouter = require("./router/nsi.router");
 const fileRouter = require("./router/file.router");
+const quizRouter = require("./router/quiz.router");
 const errorMiddleware = require("./middleware/error-middleware");
 
 const PORT = process.env.PORT || 6000;
@@ -21,9 +22,10 @@ app.use(
 app.use("/api", authRouter);
 app.use("/nsi", nsiRouter);
 app.use("/api", fileRouter);
+app.use("/api", quizRouter);
 
 app.use(express.static("public"));
-app.use("/files", express.static("images"));
+// app.use("/files", express.static("images"));
 
 app.use(errorMiddleware);
 
