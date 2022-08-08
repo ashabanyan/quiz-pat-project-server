@@ -20,7 +20,7 @@ app.use(
   })
 );
 app.use("/api", authRouter);
-app.use("/nsi", nsiRouter);
+app.use("/api/nsi", nsiRouter);
 app.use("/api", fileRouter);
 app.use("/api", quizRouter);
 
