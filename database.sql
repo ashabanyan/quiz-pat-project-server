@@ -80,6 +80,7 @@ create TABLE quiz(
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     category_id INTEGER NOT NULL,
+    roundcount INTEGER NOT NULL,
     level_id INTEGER NOT NULL,
     creator_id INTEGER NOT NULL,
     cover_id INTEGER NOT NULL,
@@ -93,3 +94,23 @@ create TABLE quiz(
 
 INSERT INTO quiz (name, category_id, level_id, creator_id, cover_id, access_roles_id) 
 VALUES ('История СССР', 1, 1, 3, 1, ARRAY [1,2,3])
+
+
+--------------------------------------------------------------------------------------------------------------
+-- Создание таблицы раундов квиза
+create TABLE quizround(
+    id SERIAL PRIMARY KEY NOT NULL,
+    quiz_id INTEGER NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (quiz_id) REFERENCES quiz(id)
+)
+
+--------------------------------------------------------------------------------------------------------------
+-- Создание таблицы вопросов квиза
+create TABLE quizquestion(
+    id SERIAL PRIMARY KEY NOT NULL,
+    round_id INTEGER NOT NULL,
+    question VARCHAR(255) NOT NULL,
+    answer VARCHAR(255) NOT NULL,
+    FOREIGN KEY (round_id) REFERENCES quizround(id)
+)
