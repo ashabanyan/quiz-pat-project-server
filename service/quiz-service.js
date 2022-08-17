@@ -1,8 +1,21 @@
 const db = require("../db");
-const QuizDTO = require("../dtos/quiz-dto");
+const QuizInfoDTO = require("../dtos/quiz-info-dto");
 const tokenService = require("./token-service");
 
 class QuizService {
+  async getAllQuizInfo() {
+    const data = await db.query("SELECT * FROM quiz");
+    const dataDto = data.rows.map((item) => new QuizInfoDTO(item));
+    const res = await Promise.all(
+      dataDto.map(async (item) => {
+        const { cover_id, ...rest } = item;
+        const cover = await this.getQuizCover(cover_id);
+        return { ...rest, cover };
+      })
+    );
+    return res;
+  }
+
   async getOneQuiz(id) {
     const data = await db.query("SELECT * FROM quiz WHERE id=$1", [id]);
     return data.rows[0];
@@ -30,7 +43,7 @@ class QuizService {
         access_roles_id,
       ]
     );
-    const newQuiz = new QuizDTO(newQuizReq.rows[0]);
+    const newQuiz = new QuizInfoDTO(newQuizReq.rows[0]);
     return newQuiz;
   }
 

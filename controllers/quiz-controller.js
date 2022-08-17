@@ -3,6 +3,12 @@ const jwt = require("jsonwebtoken");
 const tokenService = require("../service/token-service");
 
 class QuizController {
+  async getAllQuizInfo(req, res, next) {
+    const quizInfo = await QuizService.getAllQuizInfo();
+
+    res.json(quizInfo);
+  }
+
   async getOneQuiz(req, res, next) {
     const { id } = req.params;
     const data = await QuizService.getOneQuiz(id);

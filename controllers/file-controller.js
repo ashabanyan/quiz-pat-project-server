@@ -1,5 +1,4 @@
 var multer = require("multer");
-const uuid = require("uuid");
 const fileController = require("../service/file-service");
 
 class FileController {
